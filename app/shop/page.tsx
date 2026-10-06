@@ -9,7 +9,7 @@ import {
   ArrowRight,
   ChevronDown,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 type Category = "All" | "Women" | "Men" | "Kids";
@@ -128,7 +128,7 @@ const products: Product[] = [
   },
 ];
 
-export default function ShopPage() {
+function ShopPageContent() {
   const searchParams = useSearchParams();
 
   const urlCategory = searchParams.get("category");
@@ -522,9 +522,7 @@ export default function ShopPage() {
 
                     <button
                       onClick={() =>
-                        toggleWishlist(
-                          product.id
-                        )
+                        toggleWishlist(product.id)
                       }
                       aria-label={
                         isWishlisted
@@ -595,7 +593,7 @@ export default function ShopPage() {
       </section>
 
       {/* Philosophy */}
-      <section className="mx-auto max-w-[1440px] px-5 pb-20 md:px-8 lg:px-12">
+      <section className="mx-auto max-w-[1440px] px-5 pb-20 md:px-8 md:px-8 lg:px-12">
         <div className="grid overflow-hidden bg-[#e9e4da] md:grid-cols-2">
           <div className="flex min-h-[360px] flex-col justify-center px-8 py-12 md:px-14 lg:px-20">
             <p className="text-[9px] uppercase tracking-[0.3em] text-black/45">
@@ -660,5 +658,13 @@ export default function ShopPage() {
         </Link>
       </section>
     </main>
+  );
+}
+
+export default function ShopPage() {
+  return (
+    <Suspense fallback={null}>
+      <ShopPageContent />
+    </Suspense>
   );
 }
